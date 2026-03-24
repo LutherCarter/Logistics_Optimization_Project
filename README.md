@@ -1,2 +1,98 @@
-# Logistics_Optimization_Project
-ReadME
+# **Network Optimization Simulation for Logistics**
+
+This project demonstrates how to solve complex logistics and supply chain challenges using **Operations Research (OR)** techniques in Python. It features two core simulations: a Supply Chain Network Flow optimization using Linear Programming, and a Capacitated Vehicle Routing Problem (CVRP) using Constraint Programming.
+
+## **Features**
+
+1. **Supply Chain Flow Optimization (Linear Programming)**  
+   * **Objective:** Minimize total transportation costs from factories to warehouses.  
+   * **Constraints:** Respects maximum factory production limits (supply) and guarantees warehouse inventory requirements are met (demand).  
+   * **Solver:** PuLP  
+2. **Capacitated Vehicle Routing Problem \- CVRP (Constraint Programming)**  
+   * **Objective:** Find the absolute shortest paths for a fleet of vehicles delivering goods from a central depot to multiple locations.  
+   * **Constraints:** Ensures no vehicle exceeds its maximum carrying capacity.  
+   * **Solver:** Google OR-Tools
+
+## **Prerequisites**
+
+This project requires Python 3.7+ and the following libraries:
+
+* pulp  
+* ortools
+
+## **Installation**
+
+It is recommended to use a standard Windows Python installation and a virtual environment.
+
+1. Clone or download this repository.  
+2. Open your terminal (Command Prompt/PowerShell or bash).  
+3. Create and activate a virtual environment:  
+   \# Windows  
+   py \-m venv venv  
+   venv\\Scripts\\activate
+
+   \# Linux/macOS  
+   python3 \-m venv venv  
+   source venv/bin/activate
+
+4. Install the required dependencies:  
+   pip install pulp ortools
+
+   *(Note: If you encounter an externally-managed-environment error, ensure your virtual environment is activated, or use py \-m pip install pulp ortools \--break-system-packages if you intend to install globally at your own risk).*
+
+## **Usage**
+
+Run the main simulation script directly from your terminal:
+
+python network\_optimization.py
+
+### **Expected Output**
+
+The script will output two distinct sections to the console:
+
+1. **Shipping Routes:** The exact number of units to ship between specific factories and warehouses to achieve the mathematical minimum cost.  
+2. **Fleet Routing:** Step-by-step node traversal for each vehicle in the fleet, including load tracking and total distance traveled.
+
+## **Mathematical Models**
+
+### **1\. Supply Chain Flow (PuLP)**
+
+The network flow problem is modeled as a standard minimization formula:
+
+* Let ![][image1] represent the number of units shipped from factory ![][image2] to warehouse ![][image3].  
+* Let ![][image4] be the transportation cost per unit.  
+* **Objective:** Minimize ![][image5]  
+* **Subject to:**  
+  * **![][image6]** (Don't exceed factory capacity)  
+  * ![][image7] (Meet warehouse demand)  
+  * ![][image8] (Non-negativity)
+
+### **2\. Vehicle Routing Problem (OR-Tools)**
+
+The CVRP utilizes a distance matrix and demand array. It uses the PATH\_CHEAPEST\_ARC heuristic to quickly find an initial feasible solution, evaluating cumulative loads along transit nodes to strictly enforce the ![][image9]\-unit capacity limit per vehicle.
+
+## **Future Enhancements**
+
+Potential upgrades for this project include:
+
+* **Time Windows (VRPTW):** Restricting delivery nodes to specific operating hours.  
+* **Multi-Echelon Networks:** Expanding the supply chain LP to include raw material suppliers and end-retailers.  
+* **Geospatial Mapping:** Integrating the osmnx or folium libraries to replace the dummy distance matrix with real-world street data and visualize the optimized routes on a map.
+
+[image1]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAZCAYAAADaILXQAAABlUlEQVR4Xu2UvUsDQRDFk0IQtPDrCOY+cwFB0OpEUNRKBQtBsLGwF0ELbWwUbPJ32IpgaWdhbWr9CwIW9haCH7+nt2FvEeG0EvPgkZ03szOzu3OpVHro4Z8hDMOZKIrWjd1oNJbgqh1TGnEcb8L73KyyfoEPFBqG56xbhQ1lkCTJLV0vGptkb/AGrmlNgSM7vhQ8zxs06yAIfBK+knDZjrFRq9UG0jSdcHVp8rl6F0qaX0nq+gzwH3LaHVtTUvRrOGnrBegKCLhic7/rM6jX62NZlvW5Oqee5qdaEEn2DC/VrbrWXVu+OV2VsYnJ4IKxDbSn2WyGBVFd6NHgHd1u5Q+YyafuWJ9V8m5k4z+BbTsH+zbgAfqjrQsaPXXegcc8ShR/jmKHDRd0PWICsXd1EvhkNIpv8y3MqnPtM3oXmhYc48b2fT/AnrdjDChwqsKujtb6Si8FnVITpSKOrrf6+ccmkKDNyUYpsOLoH0VtrTR0hXQ9ZGv5jH87vqWhL1Lvw1/HFMn3XP+voAnR/xLXse/6/jbeAYdlV6eI7dxNAAAAAElFTkSuQmCC>
+
+[image2]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAZCAYAAAD9jjQ4AAAAsUlEQVR4XmNgGARAXl4+WVZWVhldnEFRUVEcKPlfQUGhAV0ODOTk5GyAFDO6OE7AqKSkpAbU5YsuAXLEbqAkP0gSaN9CuATIEUDX6YDYQMlyoMKlQCYjWBKokgOq2xKIfwKxIlwnDAAFW0HeYIDpggEpKSkRoMRVIP6HIgECQLvmg3SBdAPZSkD6BFwSyLkLxL9BAQCkc4B4ClwS6KgCkJFA/BqIveESMAANVyt08WECANQEIqrpNopjAAAAAElFTkSuQmCC>
+
+[image3]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAaCAYAAABl03YlAAAA50lEQVR4XtWQvQ4BURCFd4OE6ESyyf5vqV46JYmGQqPT0hGlF9JodQq1SDTEI3gGkSzfFSZMpeQkJzt7z5eZudey/khxHI+DIKjrc5Hv+6Uoim54o7MPhWHYNrA+/1o5OqS4qwMRy27ZY48PuK9zK0mSCGhAaXOrBtDacZyyABzU8O7tf46XlHmB0jQtcJOKqelWBFjhmQBaLN0EuHqe5+tMZDqYhzQddfaQ67pVgCPOdCZ6jcJnnYkYMTKjzOI6E71G0bGlgwWP13vWGT7xsI6GLoyZ8t3TYciR/QEYAXQA1gATnf2y7nfPMVhHHCCrAAAAAElFTkSuQmCC>
+
+[image4]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAZCAYAAAAxFw7TAAABcUlEQVR4Xu2SP0sDQRDFLySCIiiieJD7f4mFlcWJIIoW2oggomLjt7CxsLKwsgv4AewttEhnYxdIYSmIgojgJ1Bs/PObsAnLiJyxUsiDx+6+mXk3s7eO00MPfxBZlvWFYbiVJMmMjnWFKIom4XMQBGvmvAobaZoO69xc0E1EVzcYbJqzy/4ONtFHdH4uKHwXal2hEMfxuqy2aK5oztZKmH3Ae1vUoOspcuqY9ts62gqsdQQznhieWnlfIJ2Uy+UxrbuuO1itVoc6gmW4YeW1QDcxS6FSqQTSiY4zakb9gtZbIxPcs0VzN5fyl/E9IefY87zRdlx0tF1i577vD9i10skiwVv4iMmD7Fm3JcYzmjbFDY4l0WR0zvsyLuuFvtc2ipgs8bUJHaBoFr5onfwU/UnruaDoGtbgEfc5bumHvzV8pZt5RjtwrHeIXhdaqT/Dd08Gszc+tKz1riDmGO2wLcpVyLPTOV3B/PErOjvTsf+BT7IzThvsGoO+AAAAAElFTkSuQmCC>
+
+[image5]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGgAAAAaCAYAAABb9hlrAAAFCElEQVR4Xu1YXYhNURS+t0uR/xiT+bn7zsxlGr9NI/L7IERKMsmDEqXk54mQ3zyQZ/OiJJKHKclPEcmTJJkHKUxNKWqQhBLKaGZ839y1x7bm3HPuuXfOVbf71erss9Zea5+91j5r7b1jsTLKKKOM0oYxpr8QSqVSo7RNP9TX18+A3idtJwR9BjVpuyWLZDLZJRPfA5rmRzU1NdMRkLNovxOd/tra2tnaph9aWlpGQu+86F/XY2iqq6tbjW88aMcT2qvtljLijgMeaKEPqLcVOk/wV0zQwiBA7yvHRAAWaJkfoNMJ+qX5JQ062K5OvMa13A/Q+YZALdX8IDiL4kVDQ8NULc8GBNTwr9f8kgcc1QrqBb1GGktpeTYgxTXQ2ZqfC+hsCVKflvkBqXY0dBs1v6Th1gbE576WRwVZFAxSs5aV4QEjtQFBWqhlUUDS6wMZ87CWR4F0Oj0e4/WAvoDecM66T65gtoH+YzwecrHh765GRrlEHsfQ/QsGjO6ns0Cd1dXVNVoeBTBWs4zZq2XDDYzRxLkhNa/HaxztdaAf+Wx0COg+R3C2sU2beP8gAdoN6kF7klIpHE5t4KahKDB/0+tVplstHw5UVFSMlXm1Wx7aHXSk0y2Ob9jAp8MbKAHgb3d50GtCAOrtO+Q7aY9BQfsW2h/d/tJnu54f36GzxOUFwhS5NnAnh7FeyJj7tXw4ALsbQX1w0hots8DinIc+31LqAA7eWn6byxNH20Dy2HEJfdrcPi5guxLyl1VVVVNcvtjOqucJKCwGvdH8KMGVJzvCUFv9XCDOeQ26htcRWl4o8N0tsP3DFOuWAwN1g1o1PyrIZuGu/v2HCyZzM/EWdETLXHA1cxOh2AkEeLnft0l663drDngTbRv1fDJt23cLBpa2NT8r7K7K72OCAP19/GDN9wGLdSdrnxaEQbYUIhgBWTsccshlSm05iRSbhvwi5Xi+t3K0T6H4L8OzjQF2dYXXB52VJrOgB1MgbG7G+yO2eW4DpWUTsUi6cM6nHDvTrK4vTKZYh7nyGQI6KEyAMV5rXcgrnyyI0xGaaYFxmuHMLqdPAo58yvnCefPx3AF6Yv7dRByNZYLLo8AdyxfZBdg7w3qF9neTOXAzPbMeddk5Ifi1cs5st7tF+oi2Kysrx9C2rnmeyMdR0NlrMnl9APxlkyGufqDbKXUnZ/CCNunsngg6wXikEA8kjFz8clenhfwe/okefG6ZV2o++7pXVei32Ot4IilwyHlL/r7g8xIDg44fND8IXCnQ28K2rJLjoA7dzwuSTs+H+dvsjUfs30LPFXsOdAI0y+GHgqTINq5mfT9I3+hFEQbQvQcbd0BHsDjmWD7eTwf6PR9HYTJzTeZmeXBXhIntwvsi0E/VfQj411Bf8/0gNwD9ekJ4PyDPfaaAXRRXPvRvg664fAbGBGwuggDf3CfpOsu5+Nq2KzLXkzR3I/jgTeIo0sDfY8GCC163y/MCPyzXdCo5nrWR1zMcczClOmCduNbY2DhOC8JANhgJlwe7a73SW0gkvDYvsN3ra5sdHGeHppg6UxjJ1QyUy7dA/ahCn1faTgjyTDXgLYXst+bni+Tfc80KjqnlhUBs3xDbRTvKDAADdshftkrLooQU4c+any+YUWDzMuZxEzRTywuBlJRntK1lkYM7o5RzQCsWTOaWINx1SRnRA0E5JiuyJ+Vzx1bG/wFP489Bj2OqsJcC/gDc7rHIva0zOQAAAABJRU5ErkJggg==>
+
+[image6]: <data:image/png;base64,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>
+
+[image7]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJwAAAAZCAYAAADExUcmAAAHDklEQVR4Xu1aW2hcVRS9YSLUB9qqMTSPOZNkVHxTRyqttSo2YsGqmEJFBZUialsQK1SifvjAD/FHS4pQC5If7UfxgQZrzUc+RIV+6IcloAbaUhUrtSAqNG06rjVnn8mZPffemTuZtEm8CzYze+9z9nmt85wJghQpUqRIkSJFs5DNZn80xhQhmyFL46Srq+vyXC73Nr7/InmK3d3d1+qY/wNkdN9Qenp62nXChQhwYLFw4X6ordofCxCuH501BTkOWab9UUDaD0k45H9e+xY6hGClCRclGIxXOjs7L9F5FwLQtmHXzra2tgu0vyZ6e3svcgGgtmh/HJDnL5BulbbPMXBFOkQpFArnaGejMNPEGwvxbTR2Im8JEvbpfAAXmoYJRyDzr9J5A9oXB6TfBRnS9jmIDGbmfajrUXTWM9rZCOIIB7SgnG3wncCx41btnO+YMeE48xFgJ4NgYPZp/wJDC9uItp4iabSzXtQgXAni586xoDBjwhE8c3gdNNvbAAc9h+38Cn6n8HtfX1+3SjdrwCH/SrR1Cp33nvbVg4SEqzhcs69R7iPwbZI+KIETn5cPyHL4roKpBStkB7rqdn9wYbsJ+ddHHRGYXlbYivgOUndeBDupI14fLwGQRTqtIMM0qNddUveZE45AkOekk8YRuEv7mwFU2qBhjwW2M+9leRz0jo6O8/B9ErJf55ltoMwdkFOox9XaFwUZNPbVmPY5wPcb06DNN1B3OwnaPwg1E9iJN0gbfRxMkkXifoZ81zMft2XoJyCvQT6X8C2S7lvRg/b29vOhj0IOCpnc1v4DJvNlkozHiw2wHYdvt7+jSbxxp4ttADLh6hLYMzHPpzMnHBvNwZeCd2p/E9CK+O8EdlXj0rwK5ZzEZ4EzW8odq8wy+8DgnItyN7Pz8/n8hdofBlMf4XhZ4YQqUJdVjQQsP6FA7zGWTCs8G+NOOR35lkDfD5ngzuCl+4fidK5Q0D+CjLsyMJEvZTz4nnTpSBTYxiB/IPY1zm7sBDntdPqYRp9DEesNxpwx4RzYWAY0CZ5K6gEJjcG92OmO3H4aDaS5RW8d1NHox31bI0DZL0H+RqybA5kE9cLURzgSokwwfD9GHW1a74vE2eXlq4jrCJJVz1ASv0w4H7J4rEPbnpIyy3ldPPiG/TxGJoink+RVRwLGoj2KcIj7bNhWHomcXeaLfODTvmYCZRzwG6ghq94EZ6lvh21tXL5aMJYsO9DOfd5WkQgSo2jiCUd/ecCMENDYC1qFoC4PqnyjTk9KONhGjF00uL2+y3hhhDMeySWfJlyF7lCLcPT5K2pNIMNKyEFtbzbYWZBj2u6B55SV2sizChrdr+31wNgtrOHLgoNJRjinlwjnpwkD0/irTw3CnfRM7C+ew3kW3kiD5GU9XneJYuI1i3B38Jii7aHAjDcIuC1IuMU4kAxRyykqcR0q87OxN7BW6Qh/K/maFwlP50qmny4yqONqvc3GgasYVzPEerNZvwCwXlL/Me0Lpg/rJHZ5YkAfYh4+tvuJ2WbU71EvXRLC+QThuyhXsyXO5gjHePj8Hr5CTDxNuFJ9/XhEFOHklr06sBei2pBfHUaTDKYG8m+NWk7h2y4NWGPsSlOx1EP/yhGCV3/or8J/2Pmlfu8j/if4/NTZ42AsMXgja8qDr4PELZoQwrEs2Kdycht3dtiWsS6wb5hObdsN292eXhE3hiA1CYdJnqctjHA+qSV/BeGycmnw6ybpuFVXEc7YC8sm5HsrqGPB4nLM243RjiiQmPp8FQch0VGRL409tJ8W/SeXju9x0F+EfGC8az9tgV0Z2eARZz+TMNNEixKenR6K21Lg/0bS8o8Qk9wVxD6mYpEANyobCbUuxEYycmW9R2x/Qn4nuY0QxMiOofPm7FOMO1+WxCM3ecFdifYjxl58OG4u7SEmysqTkpy7t0veaCDRABIv1/Y4IM8WyB6nc/Zka/y2SpLKm1Bp2UVjF8ubX9UyzAbC/3KIndf3F7R9PoGrA/9to1eJZgB9sxT9dpu3U2WSLAwhKP1DBjtMljHz+Xwb9bC6c/zhe0DbK4AE41l7bqsbfN7gwCNfL3V89vMNy9itoIo8SSFvYyPouEU8+/k+v9w6EPp3ojAh+XXmFInA3WePv6VXQc5FpZdu7YsCD+HIM87ggVz5MVhPQ18B+VclbwhywXgYcXP+9kQCGiGinz4KvMCgAw7XKbvd9pYiOeSR+YC2l8FVzdj9Wnd8lRh7zir6klWrDAszTfz3CBugJwLir0W5a3xbirkBjM1WE/fMZaZ/UWhIAvUCDdskyRB27poJ5NX8icBuj0M8mOo0Kc4eMN6DGJ87IXsp2j9rABmOoMCPgzquxEnAbR+NGmbsbIIf2FOcGWBMvsDYfzdbf/iIBG8t6cE7RYoUZx3/Ad5yr+/1WujvAAAAAElFTkSuQmCC>
+
+[image8]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADsAAAAZCAYAAACPQVaOAAAC50lEQVR4Xu2WPWhUQRDHLySCoihRjyP39e4LERuLEyVBxS/EIH4QCdgrCEIQbURJY2FlIxYWIgQrRRQLET+wECwEm2ARU6WIBAKKSERBBRN/c7d7bMbNvbsT7yC8Pwz75j/zdmZ2982+WCxChAgROoggCE4ht7LZ7HAikVit7R0ByYyR1G8kr22tIJ/Pb2euL4VCYZ3oMqK/FF77dgQk04f8Qp6idml7M2DxnjHPvMvlcrlDcI/T6fQql+84SPYcic2R4DHUbm0PA+8uIFOKk8VcYM4zLl9BJpPZRtAjVucI7EYOuj7/E7IDJPcRmS6Xyyu0vR5Msa9cjlp6DX+7RqKcQN4btSuofkuz4ozc4/lqzblNkB0m7iTxR8KOYTweX+Mr1ssz8Vt2dZfVrQMyKM8EvFhzbiPIa7MsvDnaS8Jb1FK8kPaZVUxhnKfAAzUHBYIfF/Hw5+mCmzTfDIg9gLxBRkul0lpt98FbVB2+BikyqB7hgrZZYP+KPPHw/mbQGLrN0Z2TZqWN9SD3qa8op9i/cq1AjqwYCbxS2yyw7Ukmkxs1z3t7w74vH6QZ8e60SLONycIU9drlJEfDL2pQctc9lN1knEUGHVu/HG2rF4vFjD5ekqB07lgTV4bshrluxpF92t4smOOn5O5y5LQV7jtxyhXCqX6CHTspz9YoRfA8FjMXPrYhfO4wvkulUhvspOiPkLP4Xre+YcD/G3O9iDXoH4as56eCpns0UD8VctXIzs4gozSYbFC9emZI5j6O660j3GnzG3YXtUc4gmyRkVVMwN+wvp0A8Q8H1c/hshk/aR/7IfdZnV1Low+4Phbw/XICNE/RO7ENab7dII9h8rgpP0Otfv8VmN2blObFeM0x9aA/IFCvw9WFLG4jIjH/KelWkav+WP9g3IFcsbz57idc3zCwMB8aEeadkrj6/bbArPKirktCF5DPLrfswIpfYvX3SycU0fZlBQp8zo6OS0PTtggR2oc/HxTQsaIDIcMAAAAASUVORK5CYII=>
+
+[image9]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAYCAYAAAAYl8YPAAABLUlEQVR4XmNgGAXUAIyKiop26IIgoKCgYKCkpMSPJuYPVO+GLAYGcnJy1kDJXUC6HF0OBIBy6fLy8v+B+B1QzSMg/QqIvwLF3ZEVmQMlQ4C2ygElH+IyDCjuC5R/DjXwBBBHoauBA6CkJCHDREVFedDFsQK6G6aioiIK8h4QXwAGTyO6GjggxjCg/H0gXgTE0UDDTgHpHKAUI7pagobJyMhIAykWZDF5SGRcRxaDSeA1DBuAGvYfXRyvYbKysiZAudcgGlmcLMOA4pOgGnvRxEk3DCQG0gSKBGRxqGE/4QKgtAM1qBQkAcpSQNpTWVlZDCjNDFJjbGzMChSbBZSTgGpjBrIrgYbfAuZNebhhMFux4IcgS2DqQJkcyP8DxPuA+ClIDdBABbhBo2AYAQB5sGfXR5ItMgAAAABJRU5ErkJggg==>
